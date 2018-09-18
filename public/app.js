@@ -1,5 +1,6 @@
 // Grab the articles as a json
-$.getJSON("/articles", function(data) {
+$.getJSON("/articles").then(function(data) {
+  console.log(data);
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
@@ -34,11 +35,21 @@ $(document).on("click", "p", function() {
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
-      if (data.note) {
+      if (data.comment) {
+        console.log(data.comment);
         // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
-        // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
+
+        data.comment.forEach(comment => {
+          let newDiv = $("<div>");
+          newDiv.html(`
+          <h2>Author: ${comment.commenter}</h2>
+          <hr>
+          <h4>${comment.comment}</h4>
+          `);
+          $("#notes").append(newDiv);
+
+          
+        });
       }
     });
 });
@@ -54,9 +65,9 @@ $(document).on("click", "#savenote", function() {
     url: "/articles/" + thisId,
     data: {
       // Value taken from title input
-      title: $("#titleinput").val(),
+      commenter: $("#titleinput").val(),
       // Value taken from note textarea
-      body: $("#bodyinput").val()
+      comment: $("#bodyinput").val()
     }
   })
     // With that done
