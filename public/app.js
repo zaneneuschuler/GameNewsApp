@@ -1,16 +1,20 @@
 // Grab the articles as a json
-$.getJSON("/articles").then(function(data) {
+$.getJSON("/articles").then(function (data) {
+  $("#articles").empty();
+  $("#articles").append(`
+  <div class=col" id="articlesCol"></div>
+  `);
   console.log(data);
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
-    $("#articles").append("<p data-id='" + data[i]._id + "'><b>" + data[i].title +"</b></p>");
+    $("#articlesCol").append("<p data-id='" + data[i]._id + "' class ='articleClass'><b>" + data[i].title + "</b></p>");
   }
 });
 
 
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+$(document).on("click", "p", function () {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -18,21 +22,37 @@ $(document).on("click", "p", function() {
 
   // Now make an ajax call for the Article
   $.ajax({
-    method: "GET",
-    url: "/articles/" + thisId
-  })
+      method: "GET",
+      url: "/articles/" + thisId
+    })
     // With that done, add the note information to the page
-    .then(function(data) {
+    .then(function (data) {
       console.log(data);
+      $("#notes").append(`
+      <div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title">${data.title}</h5>
+    <p class="card-text">${data.summary}</p>
+    <a href="${data.link}" class="card-link" target="_blank">Link to Article</a>
+  </div>
+</div>
+<br>
+<br>
+
+      `);
       // The title of the article
-      $("#notes").append("<h2>" +`<a href="${data.link}" target="_blank">`+ data.title + "</a></h2>");
-      $("#notes").append("<h3>" + data.summary + "</h3>")
       // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
+      $("#notes").append(`
+      <div id="inputDiv"><h3>Add comment</h3><h6 class="text-muted">Name</h6><input id='titleinput' name='title' >
+      <h6 class="text-muted">Comment</h6>
+      <textarea id='bodyinput' name='body'></textarea>
+      <br><button data-id="${data._id}" id='savenote' class='btn btn-secondary'>Add Comment</button></div> <br><br>
+      `)
+      $("#notes").append("");
       // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+      $("#notes").append("");
       // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $("#notes").append("");
 
       // If there's a note in the article
       if (data.comment) {
@@ -42,36 +62,57 @@ $(document).on("click", "p", function() {
         data.comment.forEach(comment => {
           let newDiv = $("<div>");
           newDiv.html(`
-          <h2>Author: ${comment.commenter}</h2>
-          <hr>
-          <h4>${comment.comment}</h4>
+          <div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title mb-2 text-muted">${comment.commenter}</h5>
+    <h6 class="card-text">${comment.comment}</h6>
+    <button type="button" class="btn btn-outline-danger deleteButton" data-id="${comment._id}">Delete Comment</button>
+  </div>
+</div>
+          <br>
+          <br>
           `);
           $("#notes").append(newDiv);
 
-          
+
         });
       }
     });
 });
 
+$(document).on("click", ".deleteButton", function () {
+
+  let deleteID = $(this).attr("data-id");
+
+  $.ajax({
+    method: "DELETE",
+    url: "/comments/"+ deleteID
+  }).then(function (){
+    $("#notes").empty();
+  })
+
+
+
+});
+
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", "#savenote", function () {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
-    method: "POST",
-    url: "/articles/" + thisId,
-    data: {
-      // Value taken from title input
-      commenter: $("#titleinput").val(),
-      // Value taken from note textarea
-      comment: $("#bodyinput").val()
-    }
-  })
+      method: "POST",
+      url: "/articles/" + thisId,
+      data: {
+        // Value taken from title input
+        commenter: $("#titleinput").val(),
+        // Value taken from note textarea
+        comment: $("#bodyinput").val()
+      }
+    })
     // With that done
-    .then(function(data) {
+    .then(function (data) {
       // Log the response
       console.log(data);
       // Empty the notes section

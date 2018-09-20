@@ -1,0 +1,57 @@
+  body {
+
+  }
+
+  #articles {
+      overflow: auto;
+      height: 800px;
+  }
+
+  #notes{
+      padding: 20px;
+      height: 800px;
+      overflow: auto;
+  }
+
+  textarea,
+  input {
+      width: 95%;
+      background-color: rgba(0, 0, 0, 0.274);
+  }
+
+  input {
+      height: 36px;
+      font-size: 24px;
+      margin: 2px;
+  }
+
+  textarea {
+      height: 200px;
+      width: 95%;
+      font-size: 18px;
+      margin: 2px;
+
+  }
+  #inputDiv {
+            background-color: rgba(0, 0, 0, 0.274);
+            border: 2px;
+            border-radius: 5px;
+            padding: 5px;
+  }
+
+  .card{
+      box-shadow: 1px 1px 5px grey;
+  }
+
+  .container{
+      overflow: hidden;
+      max-width: 100%;
+  }
+
+  .articleClass{
+      box-shadow: 1px 1px 5px grey;
+      border-radius: 2px;
+      padding: 5px;
+      display: table;
+
+  }

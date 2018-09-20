@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -17,6 +18,14 @@ var PORT = 3000;
 
 // Initialize Express
 var app = express();
+app.use(express.static("public"));
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
 
 // Configure middleware
 
@@ -31,6 +40,23 @@ app.use(express.static("public"));
 
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URI);
+  app.get("/", function (req, res) {
+     res.render("index");
+    });
+
+  app.delete("/comments/:id", function (req, res){
+    let deleteID = req.params.id;
+    db.Comment.deleteOne({_id: deleteID}, function(err){
+      if (err) throw err;
+
+      res.json({
+        message: "Successfully deleted."
+      });
+    })
+
+  })
+
+
 
 // Routes
 
