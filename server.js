@@ -140,7 +140,7 @@ app.get("/articles", function (req, res) {
     Promise.all(queries).then(function () { // <-- AND THIS
       console.log("done");
       db.Article.find({}).sort({
-          added: 1
+          added: -1
         })
         .then(function (dbArticle) {
           // If we were able to successfully find Articles, send them back to the client
@@ -211,7 +211,7 @@ app.listen(PORT, function () {
 
 function justQueryIt() {
   db.Article.find({}).sort({
-      added: 1
+      added: -1
     })
     .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client

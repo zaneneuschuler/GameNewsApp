@@ -14,7 +14,7 @@ $.getJSON("/articles").then(function (data) {
 
 
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function () {
+$(document).on("click", ".articleClass", function () {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag

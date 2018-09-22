@@ -1,15 +1,18 @@
-  body {
 
-  }
+body{
+    height: 100%;
+    background-image: url("/curls.png");
+    background-position: fixed;
+}
 
   #articles {
       overflow: auto;
-      height: 800px;
+      height: 700px;
   }
 
   #notes{
       padding: 20px;
-      height: 800px;
+      height: 700px;
       overflow: auto;
   }
 
@@ -36,7 +39,10 @@
             background-color: rgba(0, 0, 0, 0.274);
             border: 2px;
             border-radius: 5px;
-            padding: 5px;
+            padding: 10px;
+            border-style: solid;
+            background-image: url("./blurcurls.png");
+            background-attachment: fixed;
   }
 
   .card{
@@ -53,5 +59,31 @@
       border-radius: 2px;
       padding: 5px;
       display: table;
+      background-image: url("./blurcurls.png");
+      background-attachment: fixed;
 
+  }
+
+  .headder{
+      display:table;
+      border: 2px;
+      border-radius: 5px;
+      padding: 5px;
+      border-color: rgba(0, 0, 0, 0.274);
+      border-style: solid;
+      background-color: rgba(255, 255, 255, 0.1);
+      background-image: url("./blurcurls.png");
+      background-attachment: fixed;
+  }
+
+  .card{
+      background-color: rgba(0, 0, 0, 0.479);
+  }
+
+  .card-title{
+      color: rgba(255, 255, 255, 0.863);
+  }
+
+  .card-text {
+      color: rgba(255, 255, 255, 0.479);
   }
