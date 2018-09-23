@@ -38,6 +38,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
+mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
   app.get("/", function (req, res) {
      res.render("index");
